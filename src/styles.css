@@ -1,0 +1,823 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-display: "Clash Display", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #faf8f5;
+  --color-paper-2: #f3eee8;
+  --color-cream: #f8f2ea;
+  --color-ink: #1c1917;
+  --color-ink-soft: #44403c;
+  --color-muted: #78716c;
+  --color-line: #ebe3da;
+  --color-primary: #c2410c;
+  --color-primary-hover: #9a3412;
+  --color-primary-fg: #ffffff;
+  --color-navy: #17120f;
+  --color-navy-2: #221a16;
+  --color-on-dark: #f7f7f8;
+  --color-on-dark-muted: #d6cec6;
+  --color-footer-from: #221a16;
+  --color-footer-to: #17120f;
+  --color-good: #08a06b;
+  --color-good-bright: #34d399;
+  --color-sky: #fdba74;
+  --color-cobalt: #9a3412;
+  --color-charcoal: #17120f;
+  --color-charcoal-2: #2a211c;
+  --color-sun: #f59e0b;
+  --color-coral: #ff6b4a;
+  --color-ember: #c2410c;
+  --color-honey: #fcd34d;
+  --color-amber-ink: #b45309;
+  --color-amber-wash: #fff4e5;
+  --color-rose-light: #fdba74;
+  --color-accent: #c2410c;
+  --color-accent-bright: #fdba74;
+  --color-sos: #e5273e;
+  --color-navy-3: #2a211c;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-pill: 999px;
+
+  --shadow-nav: 0 10px 40px rgba(10, 18, 28, 0.22);
+  --shadow-card:
+    0 0 0 1px rgba(17, 19, 24, 0.05), 0 1px 2px rgba(17, 19, 24, 0.04),
+    0 12px 32px rgba(17, 19, 24, 0.05);
+  --shadow-phone: 0 30px 80px rgba(10, 18, 28, 0.18);
+
+  --text-display: clamp(2.4rem, 1.1rem + 5.2vw, 4.6rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.038em;
+  --text-display--font-weight: 700;
+
+  --text-hero: clamp(2.1rem, 1rem + 3.6vw, 3.4rem);
+  --text-hero--line-height: 1.08;
+  --text-hero--letter-spacing: -0.025em;
+  --text-hero--font-weight: 600;
+
+  --text-title: clamp(1.7rem, 1.1rem + 2.2vw, 2.85rem);
+  --text-title--line-height: 1.12;
+  --text-title--letter-spacing: -0.03em;
+  --text-title--font-weight: 700;
+
+  --text-lead: clamp(1.02rem, 0.95rem + 0.4vw, 1.2rem);
+  --text-lead--line-height: 1.55;
+
+  --max-width-site: 80rem;
+  --max-width-copy: 40rem;
+  --max-width-wide: 80rem;
+
+  --spacing-section: clamp(4.5rem, 7vw, 7.5rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+@layer base {
+  /* Grid columns may shrink below their content's natural width, so long words, images
+     and scrolling rows never push a column past the edge of a phone screen. */
+  .grid > * {
+    min-width: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    /* Anchor jumps land below the floating nav. */
+    scroll-padding-top: 7rem;
+  }
+
+  a,
+  button,
+  summary,
+  input,
+  select,
+  textarea {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  details > p {
+    animation: fade-up 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 22%, white);
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  details > p,
+  .animate-page-in,
+  .animate-pulse-rose,
+  .animate-marquee,
+  .animate-route,
+  .animate-float,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+}
+
+/* Route changes cross-fade with a slight lift. */
+::view-transition-old(root) {
+  animation: 220ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
+}
+
+::view-transition-new(root) {
+  animation: 420ms cubic-bezier(0.22, 1, 0.36, 1) both vt-in;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@utility animate-page-in {
+  animation: fade-up 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tab-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes route {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-rose {
+  0% {
+    box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-good-bright) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+@utility animate-route {
+  animation: route 1.6s linear infinite;
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@utility animate-pulse-ring {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+/* The logo gradient: cobalt → electric → cyan at 135°. Cyan fails contrast on light
+   surfaces, so this text version is for dark backgrounds only; use text-brand-ink on light. */
+@utility text-brand-gradient {
+  background: linear-gradient(135deg, var(--color-cobalt) 0%, var(--color-primary) 40%, var(--color-sky) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-brand-ink {
+  background: linear-gradient(135deg, var(--color-cobalt) 0%, var(--color-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gold-gradient {
+  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 45%, #fb923c 100%);
+}
+
+@utility text-gold-gradient {
+  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 50%, #fb923c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-rose-gradient {
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #fb923c 100%);
+}
+
+@utility text-rose-gradient {
+  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 50%, #fb923c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility animate-pulse-rose {
+  animation: pulse-rose 1.8s ease-out infinite;
+}
+
+@utility bg-sunrise-gradient {
+  background: linear-gradient(135deg, var(--color-sun) 0%, var(--color-coral) 100%);
+}
+
+@utility bg-brand-gradient {
+  background: linear-gradient(135deg, var(--color-cobalt) 0%, var(--color-primary) 52%, var(--color-sky) 100%);
+}
+
+@utility font-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Fine dot grid, evokes a map without drawing one. */
+@utility bg-dotgrid {
+  background-image: radial-gradient(
+    color-mix(in oklab, currentColor 16%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility max-w-site {
+  max-width: var(--max-width-site);
+}
+
+@utility max-w-copy {
+  max-width: var(--max-width-copy);
+}
+
+@utility max-w-wide {
+  max-width: var(--max-width-wide);
+}
+
+@utility px-gutter {
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility py-section {
+  padding-block: var(--spacing-section);
+}
+
+@utility shadow-nav {
+  box-shadow: var(--shadow-nav);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+@utility shadow-phone {
+  box-shadow: var(--shadow-phone);
+}
+
+/* Fare calculator slider: filled track in the brand gradient. */
+.fare-range {
+  appearance: none;
+  height: 0.5rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, var(--color-primary), var(--color-sky)) 0 / var(--fill, 50%) 100%
+      no-repeat,
+    var(--color-paper-2);
+  cursor: pointer;
+}
+
+.fare-range:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 6px;
+}
+
+.fare-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--color-paper);
+  border: 6px solid var(--color-primary);
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.35);
+  transition: transform 150ms ease-out;
+}
+
+.fare-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.fare-range::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--color-paper);
+  border: 6px solid var(--color-primary);
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.35);
+}
+
+/* ---------- Brand splash (full page loads only) ---------- */
+/* The logo draws itself on white, then a circular opening grows from the logo to reveal
+   the page, like a lens. --splash-r drives the opening; it is registered so it can animate. */
+@property --splash-r {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  color: var(--color-ink);
+  --splash-r: 0%;
+  -webkit-mask-image: radial-gradient(circle at 50% 42%, transparent var(--splash-r), #000 calc(var(--splash-r) + 1px));
+  mask-image: radial-gradient(circle at 50% 42%, transparent var(--splash-r), #000 calc(var(--splash-r) + 1px));
+  animation:
+    splash-reveal 0.65s cubic-bezier(0.65, 0, 0.35, 1) 1.45s forwards,
+    splash-gone 0s linear 2.1s forwards;
+}
+
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(-4vh);
+  animation: splash-lift 0.65s cubic-bezier(0.65, 0, 0.35, 1) 1.45s forwards;
+}
+
+.splash-mark {
+  position: relative;
+  display: block;
+  width: clamp(8rem, 30vw, 10.5rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 24%;
+  opacity: 0;
+  transform: scale(0.72);
+  animation: splash-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+.splash-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A soft band of light passes across the logo once it has settled. */
+.splash-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.75) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: splash-shine 0.8s ease-in-out 0.65s forwards;
+}
+
+.splash-word {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  line-height: 1.1;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: splash-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+}
+
+.splash-word {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.splash-share {
+  padding-right: 0.04em;
+  background: linear-gradient(135deg, #9a3412, #c2410c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.splash-tag {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  opacity: 0;
+  animation: splash-in 0.4s ease-out 1.1s forwards;
+}
+
+/* "An initiative of" with the two partner logos, small, near the bottom */
+.splash-partners {
+  position: absolute;
+  left: 50%;
+  bottom: max(2.5rem, 6vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: splash-in 0.4s ease-out 0.4s forwards;
+}
+
+.splash-partners p {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.splash-partners div {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.splash-partners img {
+  height: 5rem;
+  width: auto;
+  object-fit: contain;
+}
+
+@keyframes splash-pop {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splash-shine {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes splash-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes splash-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splash-reveal {
+  to {
+    --splash-r: 150%;
+  }
+}
+
+/* Safety net: whatever happens to JavaScript, the splash stops covering the page. */
+@keyframes splash-gone {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes splash-lift {
+  to {
+    opacity: 0;
+    transform: translateY(-4vh) scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
+  }
+}
+
+/* ---------- Why section: outlined words drifting behind the content ---------- */
+.why-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #ecd5c1;
+  letter-spacing: -0.02em;
+}
+
+.why-marquee {
+  animation: marquee linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-marquee {
+    animation: none;
+  }
+}
+
+/* ---------- Fare journey calculator ---------- */
+/* The range input sits invisibly over the road; the car is the visible handle. */
+.journey-range {
+  appearance: none;
+  background: transparent;
+  opacity: 0;
+  margin: 0;
+}
+
+.journey-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 4.5rem;
+  height: 4rem;
+}
+
+.journey-range::-moz-range-thumb {
+  width: 4.5rem;
+  height: 4rem;
+  border: 0;
+}
+
+/* Receipt with perforated top and bottom edges. */
+.receipt {
+  --hole: radial-gradient(circle at 8px 0, transparent 5px, #000 5.5px) -8px 0 / 16px 51% repeat-x,
+    radial-gradient(circle at 8px 100%, transparent 5px, #000 5.5px) -8px 100% / 16px 51% repeat-x;
+  -webkit-mask: var(--hole);
+  mask: var(--hole);
+}
+
+.stamp {
+  animation: stamp-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: rotate(-12deg) scale(1.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: none;
+  }
+}
+
+/* How it works: the step backgrounds cross-fade slowly */
+.how-mood {
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-mood {
+    transition: none;
+  }
+}
+
+/* Faint outlined wordmark behind the calculator's commute panel */
+.journey-watermark {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(252, 211, 77, 0.22);
+}
+
+/* Inside the app: the large outlined point number */
+.tour-number {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(253, 186, 116, 0.3);
+}
+
+/* ---------- Safety: SOS alert animations ---------- */
+.sos-ring {
+  opacity: 0;
+  animation: sos-ring 2.7s ease-out infinite;
+}
+
+.sos-signal {
+  left: -6rem;
+  animation: sos-signal 6s linear infinite;
+}
+
+/* Each step lights up as the signal passes (five steps across a six-second cycle) */
+.sos-step {
+  animation: sos-step 6s ease-in-out infinite;
+}
+
+@keyframes sos-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.75);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes sos-signal {
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes sos-step {
+  0%,
+  20%,
+  100% {
+    background-color: #221819;
+    color: #fca5a5;
+    box-shadow: none;
+  }
+  6%,
+  14% {
+    background-color: #e5273e;
+    color: #fff;
+    box-shadow: 0 0 0 6px rgba(229, 39, 62, 0.2), 0 10px 30px -8px rgba(229, 39, 62, 0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sos-ring,
+  .sos-signal,
+  .sos-step {
+    animation: none;
+  }
+}
+
+/* Workplaces: the hand-drawn underline draws itself once */
+.work-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* Starts only once the heading has been revealed on scroll */
+.opacity-100 .work-underline path {
+  animation: work-underline 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+@keyframes work-underline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-underline path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+
+/* Closing panel: lane markings drift slowly along the road */
+.closing-road {
+  animation: closing-road 3.5s linear infinite;
+}
+
+@keyframes closing-road {
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-road {
+    animation: none;
+  }
+}
+
+/* Footer: lane markings, a car crossing slowly, and the oversized sunset wordmark */
+.footer-lane {
+  background: repeating-linear-gradient(90deg, rgba(253, 186, 116, 0.45) 0 18px, transparent 18px 38px);
+  animation: footer-lane 3s linear infinite;
+}
+
+.footer-car {
+  left: -3rem;
+  animation: footer-car 26s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.footer-giant {
+  background: linear-gradient(180deg, #fdba74 0%, #fb7185 45%, rgba(244, 63, 94, 0) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.9;
+}
+
+@keyframes footer-lane {
+  to {
+    background-position: 38px 0;
+  }
+}
+
+@keyframes footer-car {
+  0% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(calc(100vw + 6rem), -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-lane,
+  .footer-car {
+    animation: none;
+  }
+  .footer-car {
+    left: 8%;
+  }
+}

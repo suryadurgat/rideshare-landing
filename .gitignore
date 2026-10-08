@@ -1,0 +1,18 @@
+.vercel
+.env*
+
+# Dependencies and build output
+node_modules
+.node_modules.lock
+.output
+dist
+.tanstack
+
+# Large source media and local reference material (not used by the site)
+ai video.mp4
+attachments/
+artifacts/
+screenshots/
+
+# OS files
+.DS_Store
